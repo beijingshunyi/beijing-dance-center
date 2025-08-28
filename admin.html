@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>青翎舞蹈艺术中心 - 后台管理</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1a1a1a;
+            --secondary-color: #d4af37;
+            --accent-color: #f8f8f8;
+            --text-color: #333;
+            --light-text: #f8f8f8;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* 导航栏样式 */
+        header {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            padding: 15px 0;
+            margin-bottom: 30px;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--secondary-color);
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+        
+        .logout-btn {
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+        
+        .logout-btn:hover {
+            background-color: var(--light-text);
+        }
+        
+        /* 仪表盘样式 */
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .card-icon {
+            font-size: 24px;
+            color: var(--secondary-color);
+        }
+        
+        .card-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        /* 内容编辑区域 */
+        .content-editor {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+        
+        .editor-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+        }
+        
+        .form-group textarea {
+            height: 150px;
+            resize: vertical;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn:hover {
+            background-color: var(--light-text);
+        }
+        
+        .btn-secondary {
+            background-color: #ccc;
+            color: var(--primary-color);
+            margin-left: 10px;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #bbb;
+        }
+        
+        /* 图片上传区域 */
+        .image-upload {
+            border: 2px dashed #ddd;
+            border-radius: 5px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 20px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .image-upload:hover {
+            border-color: var(--secondary-color);
+        }
+        
+        .image-upload i {
+            font-size: 48px;
+            color: #ccc;
+            margin-bottom: 15px;
+        }
+        
+        .image-upload p {
+            color: #999;
+            margin-bottom: 15px;
+        }
+        
+        .upload-btn {
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+        
+        .upload-btn:hover {
+            background-color: var(--light-text);
+        }
+        
+        /* 预览区域 */
+        .preview-section {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+        }
+        
+        .preview-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .preview-content {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid #eee;
+        }
+        
+        /* 标签页样式 */
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: 500;
+            color: #999;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .tab.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--secondary-color);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* 成功提示 */
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .tabs {
+                flex-wrap: wrap;
+            }
+            
+            .tab {
+                margin-bottom: 0;
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">青翎舞蹈艺术中心 - 后台管理</a>
+                <button class="logout-btn"><i class="fas fa-sign-out-alt"></i> 退出登录</button>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- 仪表盘 -->
+        <div class="dashboard">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">访问量</h3>
+                    <div class="card-icon"><i class="fas fa-eye"></i></div>
+                </div>
+                <div class="card-value">1,234</div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">留言数</h3>
+                    <div class="card-icon"><i class="fas fa-envelope"></i></div>
+                </div>
+                <div class="card-value">56</div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">学员数</h3>
+                    <div class="card-icon"><i class="fas fa-users"></i></div>
+                </div>
+                <div class="card-value">324</div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">课程数</h3>
+                    <div class="card-icon"><i class="fas fa-book"></i></div>
+                </div>
+                <div class="card-value">12</div>
+            </div>
+        </div>
+
+        <!-- 内容编辑区域 -->
+        <div class="content-editor">
+            <h2 class="editor-title">网站内容编辑</h2>
+            
+            <div class="success-message" id="successMessage">
+                <i class="fas fa-check-circle"></i> 保存成功！
+            </div>
+            
+            <div class="tabs">
+                <div class="tab active" data-tab="home">首页内容</div>
+                <div class="tab" data-tab="about">关于我们</div>
+                <div class="tab" data-tab="courses">课程介绍</div>
+                <div class="tab" data-tab="teachers">师资团队</div>
+                <div class="tab" data-tab="services">企业服务</div>
+                <div class="tab" data-tab="contact">联系方式</div>
+            </div>
+            
+            <!-- 首页内容 -->
+            <div class="tab-content active" id="home">
+                <form id="homeForm">
+                    <div class="form-group">
+                        <label for="heroTitle">首页标题</label>
+                        <input type="text" id="heroTitle" value="北京青翎舞蹈艺术中心">
+                    </div>
+                    <div class="form-group">
+                        <label for="heroSubtitle">首页副标题</label>
+                        <input type="text" id="heroSubtitle" value="专业舞蹈培训与编排，让艺术点亮生活，用舞姿诠释灵魂">
+                    </div>
+                    <div class="form-group">
+                        <label for="heroButtonText">按钮文字</label>
+                        <input type="text" id="heroButtonText" value="立即咨询">
+                    </div>
+                    <div class="form-group">
+                        <label for="heroImage">首页背景图片</label>
+                        <div class="image-upload">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>点击或拖拽图片到此处上传</p>
+                            <button type="button" class="upload-btn">选择图片</button>
+                            <input type="file" id="heroImage" style="display: none;">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn">保存修改</button>
+                    <button type="button" class="btn btn-secondary">重置</button>
+                </form>
+                
+                <div class="preview-section">
+                    <h3 class="preview-title">预览效果</h3>
+                    <div class="preview-content">
+                        <h1 id="previewHeroTitle">北京青翎舞蹈艺术中心</h1>
+                        <p id="previewHeroSubtitle">专业舞蹈培训与编排，让艺术点亮生活，用舞姿诠释灵魂</p>
+                        <button class="btn" id="previewHeroButton">立即咨询</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 关于我们 -->
+            <div class="tab-content" id="about">
+                <form id="aboutForm">
+                    <div class="form-group">
+                        <label for="aboutTitle">标题</label>
+                        <input type="text" id="aboutTitle" value="关于我们">
+                    </div>
+                    <div class="form-group">
+                        <label for="aboutSubtitle">副标题</label>
+                        <input type="text" id="aboutSubtitle" value="青翎舞蹈艺术中心，致力于提供最专业的舞蹈培训与艺术体验">
+                    </div>
+                    <div class="form-group">
+                        <label for="aboutHeading">内容标题</label>
+                        <input type="text" id="aboutHeading" value="专业舞蹈教育机构">
+                    </div>
+                    <div class="form-group">
+                        <label for="aboutContent">内容描述</label>
+                        <textarea id="aboutContent">北京青翎舞蹈艺术中心成立于2017年，位于北京东城区崇文门商界A座8层，是一家专注于成人及青少年舞蹈培训的专业机构。
+
+我们拥有一支经验丰富、专业资质过硬的教师团队，致力于为学员提供最优质的舞蹈教学服务。中心开设多种舞蹈课程，包括中国舞、芭蕾、现代舞等，满足不同学员的需求。
+
+青翎舞蹈不仅注重舞蹈技巧的传授，更重视艺术修养的培养，让每一位学员都能在舞蹈中找到自信与快乐。</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="aboutButtonText">按钮文字</label>
+                        <input type="text" id="aboutButtonText" value="查看课程">
+                    </div>
+                    <div class="form-group">
+                        <label for="aboutImage">关于我们图片</label>
+                        <div class="image-upload">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>点击或拖拽图片到此处上传</p>
+                            <button type="button" class="upload-btn">选择图片</button>
+                            <input type="file" id="aboutImage" style="display: none;">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn">保存修改</button>
+                    <button type="button" class="btn btn-secondary">重置</button>
+                </form>
+            </div>
+            
+            <!-- 课程介绍 -->
+            <div class="tab-content" id="courses">
+                <form id="coursesForm">
+                    <div class="form-group">
+                        <label for="coursesTitle">标题</label>
+                        <input type="text" id="coursesTitle" value="课程介绍">
+                    </div>
+                    <div class="form-group">
+                        <label for="coursesSubtitle">副标题</label>
+                        <input type="text" id="coursesSubtitle" value="多样化的舞蹈课程，满足不同年龄和水平的需求">
+                    </div>
+                    
+                    <h3 style="margin: 20px 0 10px; color: var(--primary-color);">课程1</h3>
+                    <div class="form-group">
+                        <label for="course1Title">课程标题</label>
+                        <input type="text" id="course1Title" value="中国舞">
+                    </div>
+                    <div class="form-group">
+                        <label for="course1Content">课程描述</label>
+                        <textarea id="course1Content">融合传统与现代的中国舞课程，从基础动作到完整舞蹈作品，系统学习中国舞蹈的精髓。</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="course1Image">课程图片</label>
+                        <div class="image-upload">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>点击或拖拽图片到此处上传</p>
+                            <button type="button" class="upload-btn">选择图片</button>
+                            <input type="file" id="course1Image" style="display: none;">
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin: 20px 0 10px; color: var(--primary-color);">课程2</h3>
+                    <div class="form-group">
+                        <label for="course2Title">课程标题</label>
+                        <input type="text" id="course2Title" value="芭蕾舞">
+                    </div>
+                    <div class="form-group">
+                        <label for="course2Content">课程描述</label>
+                        <textarea id="course2Content">专业芭蕾舞训练，从基础动作到高级技巧，培养优雅气质和强健体魄，适合各年龄段学员。</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="course2Image">课程图片</label>
+                        <div class="image-upload">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>点击或拖拽图片到此处上传</p>
+                            <button type="button" class="upload-btn">选择图片</button>
+                            <input type="file" id="course2Image" style="display: none;">
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin: 20px 0 10px; color: var(--primary-color);">课程3</h3>
+                    <div class="form-group">
+                        <label for="course3Title">课程标题</label>
+                        <input type="text" id="course3Title" value="现代舞">
+                    </div>
+                    <div class="form-group">
+                        <label for="course3Content">课程描述</label>
+                        <textarea id="course3Content">自由表达的现代舞课程，注重身体感知与创造力培养，让舞蹈成为自我表达的方式。</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="course3Image">课程图片</label>
+                        <div class="image-upload">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>点击或拖拽图片到此处上传</p>
+                            <button type="button" class="upload-btn">选择图片</button>
+                            <input type="file" id="course3Image" style="display: none;">
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn">保存修改</button>
+                    <button type="button" class="btn btn-secondary">重置</button>
+                </form>
+            </div>
+            
+            <!-- 师资团队 -->
+            <div class="tab-content" id="teachers">
+                <form id="teachersForm">
+                    <div class="form-group">
+                        <label for="teachersTitle">标题</label>
+                        <input type="text" id="teachersTitle" value="师资团队">
+                    </div>
+                    <div class="form-group">
+                        <label for="teachersSubtitle">副标题</label>
+                        <input type="text" id="teachersSubtitle" value="专业、热情、富有经验的教师团队，为您的舞蹈之路保驾护航">
+                    </div>
+                    
+                    <h3 style="margin: 20px 0 10px; color: var(--primary-color);">教师1</h3>
+                    <div class="form-group">
+                        <label for="teacher1Name">教师姓名</label>
+                        <input type="text" id="teacher1Name" value="李老师">
+                    </div>
+                    <div class="form-group">
+                        <label for="teacher1Title">教师职位</label>
+                        <input type="text" id="teacher1Title" value="中国舞高级教师">
+                    </div>
+                    <div class="form-group">
+                        <label for="teacher1Image">教师照片</label>
+                        <div class="image-upload">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>点击或拖拽图片到此处上传</p>
+                            <button type="button" class="upload-btn">选择图片</button>
+                            <input type="file" id="teacher1Image" style="display: none;">
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin: 20px 0 10px; color: var(--primary-color);">教师2</h3>
+                    <div class="form-group">
+                        <label for="teacher2Name">教师姓名</label>
+                        <input type="text" id="teacher2Name" value="王老师">
+                    </div>
+                    <div class="form-group">
+                        <label for="teacher2Title">教师职位</label>
+                        <input type="text" id="teacher2Title" value="芭蕾舞专业导师">
+                    </div>
+                    <div class="form-group">
+                        <label for="teacher2Image">教师照片</label>
+                        <div class="image-upload">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>点击或拖拽图片到此处上传</p>
+                            <button type="button" class="upload-btn">选择图片</button>
+                            <input type="file" id="teacher2Image" style="display: none;">
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin: 20px 0 10px; color: var(--primary-color);">教师3</h3>
+                    <div class="form-group">
+                        <label for="teacher3Name">教师姓名</label>
+                        <input type="text" id="teacher3Name" value="张老师">
+                    </div>
+                    <div class="form-group">
+                        <label for="teacher3Title">教师职位</label>
+                        <input type="text" id="teacher3Title" value="现代舞编导">
+                    </div>
+                    <div class="form-group">
+                        <label for="teacher3Image">教师照片</label>
+                        <div class="image-upload">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>点击或拖拽图片到此处上传</p>
+                            <button type="button" class="upload-btn">选择图片</button>
+                            <input type="file" id="teacher3Image" style="display: none;">
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin: 20px 0 10px; color: var(--primary-color);">教师4</h3>
+                    <div class="form-group">
+                        <label for="teacher4Name">教师姓名</label>
+                        <input type="text" id="teacher4Name" value="陈老师">
+                    </div>
+                    <div class="form-group">
+                        <label for="teacher4Title">教师职位</label>
+                        <input type="text" id="teacher4Title" value="少儿舞蹈专家">
+                    </div>
+                    <div class="form-group">
+                        <label for="teacher4Image">教师照片</label>
+                        <div class="image-upload">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>点击或拖拽图片到此处上传</p>
+                            <button type="button" class="upload-btn">选择图片</button>
+                            <input type="file" id="teacher4Image" style="display: none;">
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn">保存修改</button>
+                    <button type="button" class="btn btn-secondary">重置</button>
+                </form>
+            </div>
+            
+            <!-- 企业服务 -->
+            <div class="tab-content" id="services">
+                <form id="servicesForm">
+                    <div class="form-group">
+                        <label for="servicesTitle">标题</label>
+                        <input type="text" id="servicesTitle" value="企业服务">
+                    </div>
+                    <div class="form-group">
+                        <label for="servicesSubtitle">副标题</label>
+                        <input type="text" id="servicesSubtitle" value="专业的企业舞蹈编排与培训，为您的团队注入活力与创意">
+                    </div>
+                    <div class="form-group">
+                        <label for="servicesHeading">内容标题</label>
+                        <input type="text" id="servicesHeading" value="企业年会舞蹈编排">
+                    </div>
+                    <div class="form-group">
+                        <label for="servicesContent">内容描述</label>
+                        <textarea id="servicesContent">青翎舞蹈艺术中心拥有丰富的企业年会舞蹈编排经验，曾为众多知名企业提供专业的舞蹈编排与培训服务。</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="servicesList">服务列表（每行一项）</label>
+                        <textarea id="servicesList">定制化舞蹈编排，根据企业文化和主题量身打造
+专业舞蹈教练上门指导，高效排练
+提供音乐选择、服装建议等全方位服务
+适合不同年龄段和舞蹈基础的员工参与</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="servicesFooter">底部描述</label>
+                        <textarea id="servicesFooter">让您的企业年会与众不同，展现团队风采，提升企业凝聚力！</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="servicesButtonText">按钮文字</label>
+                        <input type="text" id="servicesButtonText" value="立即咨询">
+                    </div>
+                    <div class="form-group">
+                        <label for="servicesImage">服务图片</label>
+                        <div class="image-upload">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>点击或拖拽图片到此处上传</p>
+                            <button type="button" class="upload-btn">选择图片</button>
+                            <input type="file" id="servicesImage" style="display: none;">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn">保存修改</button>
+                    <button type="button" class="btn btn-secondary">重置</button>
+                </form>
+            </div>
+            
+            <!-- 联系方式 -->
+            <div class="tab-content" id="contact">
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="contactTitle">标题</label>
+                        <input type="text" id="contactTitle" value="联系我们">
+                    </div>
+                    <div class="form-group">
+                        <label for="contactSubtitle">副标题</label>
+                        <input type="text" id="contactSubtitle" value="欢迎随时联系我们，了解更多课程信息或预约体验课">
+                    </div>
+                    <div class="form-group">
+                        <label for="contactAddress">地址</label>
+                        <input type="text" id="contactAddress" value="北京市东城区崇文门商界A座8层815">
+                    </div>
+                    <div class="form-group">
+                        <label for="contactPhone">电话</label>
+                        <input type="text" id="contactPhone" value="010-12345678">
+                    </div>
+                    <div class="form-group">
+                        <label for="contactEmail">邮箱</label>
+                        <input type="email" id="contactEmail" value="contact@qinglingdance.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="contactWechat">微信</label>
+                        <input type="text" id="contactWechat" value="qinglingdance">
+                    </div>
+                    <div class="form-group">
+                        <label for="contactFormName">表单姓名标签</label>
+                        <input type="text" id="contactFormName" value="您的姓名">
+                    </div>
+                    <div class="form-group">
+                        <label for="contactFormEmail">表单邮箱标签</label>
+                        <input type="text" id="contactFormEmail" value="您的邮箱">
+                    </div>
+                    <div class="form-group">
+                        <label for="contactFormPhone">表单电话标签</label>
+                        <input type="text" id="contactFormPhone" value="您的电话">
+                    </div>
+                    <div class="form-group">
+                        <label for="contactFormMessage">表单留言标签</label>
+                        <input type="text" id="contactFormMessage" value="留言内容">
+                    </div>
+                    <div class="form-group">
+                        <label for="contactFormSubmit">表单提交按钮文字</label>
+                        <input type="text" id="contactFormSubmit" value="发送留言">
+                    </div>
+                    <button type="submit" class="btn">保存修改</button>
+                    <button type="button" class="btn btn-secondary">重置</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 标签页切换
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                // 移除所有标签页的active类
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // 添加当前标签页的active类
+                this.classList.add('active');
+                const tabId = this.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+        
+        // 图片上传按钮点击事件
+        document.querySelectorAll('.upload-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const input = this.nextElementSibling;
+                input.click();
+            });
+        });
+        
+        // 图片文件选择事件
+        document.querySelectorAll('input[type="file"]').forEach(input => {
+            input.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        // 这里可以添加图片预览功能
+                        console.log('图片已选择:', e.target.result);
+                    };
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+        });
+        
+        // 表单提交事件
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // 显示成功消息
+                const successMessage = document.getElementById('successMessage');
+                successMessage.style.display = 'block';
+                
+                // 3秒后隐藏成功消息
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 3000);
+                
+                // 这里可以添加保存数据的逻辑
+                console.log('表单已提交:', this.id);
+            });
+        });
+        
+        // 重置按钮点击事件
+        document.querySelectorAll('.btn-secondary').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (confirm('确定要重置表单内容吗？所有未保存的修改将丢失。')) {
+                    this.closest('form').reset();
+                }
+            });
+        });
+        
+        // 首页内容实时预览
+        document.getElementById('heroTitle').addEventListener('input', function() {
+            document.getElementById('previewHeroTitle').textContent = this.value;
+        });
+        
+        document.getElementById('heroSubtitle').addEventListener('input', function() {
+            document.getElementById('previewHeroSubtitle').textContent = this.value;
+        });
+        
+        document.getElementById('heroButtonText').addEventListener('input', function() {
+            document.getElementById('previewHeroButton').textContent = this.value;
+        });
+        
+        // 退出登录
+        document.querySelector('.logout-btn').addEventListener('click', function() {
+            if (confirm('确定要退出登录吗？')) {
+                // 这里可以添加退出登录的逻辑
+                alert('已成功退出登录');
+                // 实际项目中应该重定向到登录页面
+                // window.location.href = 'login.html';
+            }
+        });
+    </script>
+</body>
+</html>
